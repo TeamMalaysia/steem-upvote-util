@@ -8,3 +8,5 @@ This is just a simple bot
 - REGEX for MD
 - calculate the length of the body
 
+## LICENSE
+MIT
