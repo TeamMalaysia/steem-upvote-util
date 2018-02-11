@@ -10,7 +10,7 @@
     "babel-polyfill": "^6.26.0",
     "dotenv": "^4.0.0",
     "mssql": "^4.1.0",
-    "steem": "^0.6.7",
+    "steem": "^0.7.1",
     "steem-bot": "^0.7.0",
     "winston": "^2.4.0"
   },
