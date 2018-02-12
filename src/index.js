@@ -2,36 +2,64 @@ import dotenv from 'dotenv';
 import steem from 'steem';
 import 'babel-polyfill';
 
-
+import {
+  imageParser,
+  linkParser,
+  divParser,
+  breakLineParser
+} from './regex';
 
 dotenv.config();
 
-// const bot = new SteemBot({
-//   username: process.env.STEEM_USERNAME,
-//   postingKey: process.env.STEEM_POSTING
-// });
+// ABOUT THE POST
 
+function aboutPost(author, permlink, weightage) {
+  return new Promise(function(resolve, reject) {
+    steem.api.getContent(author, permlink, function(
+      err,
+      result
+    ) {
+      if (err) {
+        console.log('ERROR');
+        reject('ERROR');
+      }
 
+      const isCheetah = !(
+        result.active_votes.filter(data => {
+          if (data.voter === 'cheetah') {
+            return true;
+          }
+          return false;
+        }).length === 0
+      );
 
+      const bodyParse1 = imageParser(result.body);
+      const bodyParse2 = linkParser(bodyParse1);
+      const articleLength = bodyParse2.length;
+
+      resolve({
+        author: result.author,
+        created: result.created,
+        isCheetah,
+        articleLength
+      });
+    });
+  });
+}
 
 // UPVOTE
 
-// steem.broadcast.vote(process.env.STEEM_POSTING, process.env.STEEM_USERNAME, "superoo7", "preperation-for-upcoming-meetup", 10000, function(err, result) {
-//   console.log(err, result);
-// });
-
-steem.api.getContent("steemitservice", "google-faces-lawsuit-in-us-for-allegedly-selling-defected-pixel-smartphones", function(err, result) {
-  if (err) {
-    console.log("ERROR");
-    return;
-  }
-
-  console.log(`@${result.author}`);
-  console.log(result.created);
-  console.log(result.body.length);
-  result.active_votes.map(data => {
-    if (data.voter === 'cheetah') {
-      console.log("HEHE")
+function upvote(author, permlink, weightage) {
+  return steem.broadcast.vote(
+    process.env.STEEM_POSTING,
+    process.env.STEEM_USERNAME,
+    'superoo7',
+    'preperation-for-upcoming-meetup',
+    10000,
+    function(err, result) {
+      console.log(err, result);
     }
-  })
-});
+  );
+}
+
+export { aboutPost };
