@@ -44,15 +44,16 @@ asd asd asd asd
 </div>
 `;
 
-// Image test
 function regexTest() {
+  console.log('==========REGEX TEST START==========');
+  // Image test
   let resultFile = imageParser(sourceFile);
   console.log('imagePaser test:');
   console.log(resultFile === imgFile);
-
   // Link test
   console.log('linkPaser test:');
   console.log(linkParser(resultFile) === linkFile);
+  console.log('========== REGEX TEST END ==========');
 }
 
 export default regexTest;
