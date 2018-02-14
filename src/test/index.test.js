@@ -1,10 +1,10 @@
 import moment from 'moment';
-import { aboutPost } from '../index';
 import {
+  aboutPost,
   checkPostAge,
   weightageForPost,
   beautifyDate
-} from '../check';
+} from '../index';
 
 function aboutTest() {
   console.log('==========ABOUT TEST START==========');
@@ -36,11 +36,16 @@ function testFunction(author, permlink) {
     } = data;
     if (isCheetah) {
       console.log('Voted by cheetah');
-    } else if (checkPostAge(created)) {
+    } else if (checkPostAge(created, 302400000)) {
+      // 3.5 days
       console.log('Post too old');
     } else {
       let createdTime = beautifyDate(created);
-      let weightage = weightageForPost(articleLength);
+      let weightage = weightageForPost(
+        articleLength,
+        250,
+        4000
+      );
       console.log(
         `The post is ${createdTime} and will be upvoted by ${weightage /
           100}%`

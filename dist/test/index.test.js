@@ -11,8 +11,6 @@ var _moment2 = _interopRequireDefault(_moment);
 
 var _index = require('../index');
 
-var _check = require('../check');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function aboutTest() {
@@ -35,11 +33,12 @@ function testFunction(author, permlink) {
 
     if (isCheetah) {
       console.log('Voted by cheetah');
-    } else if ((0, _check.checkPostAge)(created)) {
+    } else if ((0, _index.checkPostAge)(created, 302400000)) {
+      // 3.5 days
       console.log('Post too old');
     } else {
-      var createdTime = (0, _check.beautifyDate)(created);
-      var weightage = (0, _check.weightageForPost)(articleLength);
+      var createdTime = (0, _index.beautifyDate)(created);
+      var weightage = (0, _index.weightageForPost)(articleLength, 250, 4000);
       console.log('The post is ' + createdTime + ' and will be upvoted by ' + weightage / 100 + '%');
     }
   });

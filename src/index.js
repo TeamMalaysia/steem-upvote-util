@@ -1,5 +1,6 @@
-import dotenv from 'dotenv';
 import steem from 'steem';
+import moment from 'moment';
+
 import 'babel-polyfill';
 
 import {
@@ -9,18 +10,68 @@ import {
   breakLineParser
 } from './regex';
 
-dotenv.config();
+function main(author, permlink, config) {
+  const {
+    maximumPostAge,
+    minimumLength,
+    optimumLength
+  } = config;
+
+  return aboutPost(author, permlink)
+    .then(data => {
+      console.log(data);
+      if (data === 'POST_NOT_FOUND') {
+        return { msg: 'POST_NOT_FOUND' };
+      }
+
+      const {
+        author,
+        permlink,
+        created,
+        isCheetah,
+        articleLength
+      } = data;
+      if (isCheetah) {
+        return { msg: 'CHEETAH' };
+      } else if (checkPostAge(created, maximumPostAge)) {
+        // 3.5 days
+        return { msg: 'OLD_POST' };
+      } else {
+        let createdTime = beautifyDate(created);
+        let weightage = weightageForPost(
+          articleLength,
+          minimumLength,
+          optimumLength
+        );
+        return {
+          time: createdTime,
+          weightage,
+          author,
+          permlink,
+          msg: `The post is created ${createdTime} and will be upvoted by ${weightage /
+            100}%`
+        };
+      }
+    })
+    .catch(error => {
+      msg: 'POST_NOT_FOUND';
+    });
+}
 
 // ABOUT THE POST
 
-function aboutPost(author, permlink, weightage) {
+function aboutPost(author, permlink) {
   return new Promise(function(resolve, reject) {
     steem.api.getContent(author, permlink, function(
       err,
       result
     ) {
-      if (err) {
-        console.log('ERROR');
+      if (
+        err ||
+        (result.id === 0 &&
+          result.author === '' &&
+          result.permlink === '')
+      ) {
         reject('ERROR');
       }
 
@@ -39,27 +90,84 @@ function aboutPost(author, permlink, weightage) {
 
       resolve({
         author: result.author,
+        permlink,
         created: result.created,
         isCheetah,
         articleLength
       });
     });
-  });
+  }).catch(err => 'POST_NOT_FOUND');
 }
 
 // UPVOTE
 
-function upvote(author, permlink, weightage) {
+function upvote(
+  steem_posting_key,
+  steem_username,
+  author,
+  permlink,
+  weightage
+) {
   return steem.broadcast.vote(
-    process.env.STEEM_POSTING,
-    process.env.STEEM_USERNAME,
-    'superoo7',
-    'preperation-for-upcoming-meetup',
-    10000,
+    steem_posting_key,
+    steem_username,
+    author,
+    permlink,
+    weightage,
     function(err, result) {
       console.log(err, result);
     }
   );
 }
 
-export { aboutPost };
+function checkPostAge(isoDate, maximumPostAge) {
+  const unixDate = new Date(
+    isoDate
+      .replace(/-/g, '/')
+      .replace('T', ' ')
+      .replace('Z', '')
+  );
+  return Date.now() - unixDate > maximumPostAge;
+}
+
+function weightageForPost(
+  postLength,
+  minimumLength,
+  optimumLength
+) {
+  if (postLength < minimumLength) {
+    // 10% VP
+    return 10 * 100;
+  } else if (postLength < optimumLength) {
+    // 10% ~ 80% VP
+    return parseInt(
+      (postLength - minimumLength) /
+        (optimumLength - minimumLength) *
+        70 *
+        100 +
+        10
+    );
+  } else {
+    // 80% VP
+    return 80 * 100;
+  }
+}
+
+function beautifyDate(isoDate) {
+  const unixDate = new Date(
+    isoDate
+      .replace(/-/g, '/')
+      .replace('T', ' ')
+      .replace('Z', '')
+  );
+  return moment(unixDate).fromNow();
+}
+
+export {
+  main,
+  aboutPost,
+  upvote,
+  checkPostAge,
+  weightageForPost,
+  beautifyDate
+};
