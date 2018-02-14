@@ -16,8 +16,8 @@ const config = {
 };
 
 main(
-  'chuazm',
-  'love-is-in-the-air-in-mindvalley-benefits-for-company-culture',
+  'superoo7',
+  'gopro-hero-6-2018-02-13-09-33-41',
   config
 ).then(data => console.log(data));
 

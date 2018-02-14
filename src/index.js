@@ -155,7 +155,7 @@ function weightageForPost(
         (optimumLength - minimumLength) *
         70 *
         100 +
-        10
+        10 * 100
     );
   } else {
     // 80% VP
