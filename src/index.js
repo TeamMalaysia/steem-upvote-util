@@ -117,16 +117,17 @@ function upvote(
       weightage,
       function(err, result) {
         if (err) {
-          return 'ERROR';
-        }
-
-        if (!!result.id && !!result.block_num) {
+          reject('ERROR');
+        } else if (!result) {
+          reject('ERROR');
+        } else if (!!result.id && !!result.block_num) {
           resolve(result);
+        } else {
+          reject('ERROR');
         }
-        reject('ERROR');
       }
     );
-  }).catch(err => err);
+  }).catch(err => 'ERROR');
 }
 
 function checkPostAge(isoDate, maximumPostAge) {

@@ -1,12 +1,12 @@
 import { aboutTest } from './index.test';
 import regexTest from './regex.test';
-import { main } from '../index';
+import { main, upvote } from '../index';
 
 // REGEX TEST
 regexTest();
 
 // ABOUT POST TEST
-// aboutTest();
+aboutTest();
 
 // main
 const config = {
@@ -20,3 +20,4 @@ main(
   'love-is-in-the-air-in-mindvalley-benefits-for-company-culture',
   config
 ).then(data => console.log(data));
+

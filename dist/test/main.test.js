@@ -14,7 +14,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _regex2.default)();
 
 // ABOUT POST TEST
-// aboutTest();
+(0, _index.aboutTest)();
 
 // main
 var config = {

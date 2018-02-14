@@ -97,16 +97,17 @@ function upvote(steem_posting_key, steem_username, author, permlink, weightage) 
   return new Promise(function (resolve, reject) {
     _steem2.default.broadcast.vote(steem_posting_key, steem_username, author, permlink, weightage, function (err, result) {
       if (err) {
-        return 'ERROR';
-      }
-
-      if (!!result.id && !!result.block_num) {
+        reject('ERROR');
+      } else if (!result) {
+        reject('ERROR');
+      } else if (!!result.id && !!result.block_num) {
         resolve(result);
+      } else {
+        reject('ERROR');
       }
-      reject('ERROR');
     });
   }).catch(function (err) {
-    return err;
+    return 'ERROR';
   });
 }
 
