@@ -95,7 +95,14 @@ function aboutPost(author, permlink) {
 
 function upvote(steem_posting_key, steem_username, author, permlink, weightage) {
   return _steem2.default.broadcast.vote(steem_posting_key, steem_username, author, permlink, weightage, function (err, result) {
-    console.log(err, result);
+    if (err) {
+      return 'ERROR';
+    }
+
+    if (!!result.id && !!result.block_num) {
+      return result;
+    }
+    return 'ERROR';
   });
 }
 
