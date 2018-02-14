@@ -94,15 +94,19 @@ function aboutPost(author, permlink) {
 // UPVOTE
 
 function upvote(steem_posting_key, steem_username, author, permlink, weightage) {
-  return _steem2.default.broadcast.vote(steem_posting_key, steem_username, author, permlink, weightage, function (err, result) {
-    if (err) {
-      return 'ERROR';
-    }
+  return new Promise(function (resolve, reject) {
+    _steem2.default.broadcast.vote(steem_posting_key, steem_username, author, permlink, weightage, function (err, result) {
+      if (err) {
+        return 'ERROR';
+      }
 
-    if (!!result.id && !!result.block_num) {
-      return result;
-    }
-    return 'ERROR';
+      if (!!result.id && !!result.block_num) {
+        resolve(result);
+      }
+      reject('ERROR');
+    });
+  }).catch(function (err) {
+    return err;
   });
 }
 
