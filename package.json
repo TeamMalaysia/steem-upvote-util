@@ -40,8 +40,21 @@
   "engines": {
     "node": "8.9.2"
   },
-  "name": "statBot",
+  "name": "steem-upvote-util",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "dist/index.js",
+  "license": "MIT",
+  "description": "Bot that contains function for upvoting quality content.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeamMalaysia/UpvoteBot.git"
+  },
+  "author": "Lai Weng Han (https://www.wenghan.me)",
+  "bugs": {
+    "url": "https://github.com/TeamMalaysia/UpvoteBot/issues"
+  },
+  "homepage": "https://github.com/TeamMalaysia/UpvoteBot#readme",
+  "keywords": [
+    "['steem']"
+  ]
 }
