@@ -41,8 +41,8 @@
   "engines": {
     "node": "8.9.2"
   },
-  "name": "statBot",
-  "version": "1.0.2",
-  "main": "index.js",
+  "name": "steem-upvote-util",
+  "version": "1.0.3",
+  "main": "dist/index.js",
   "license": "MIT"
 }
