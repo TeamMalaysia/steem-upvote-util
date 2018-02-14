@@ -115,7 +115,14 @@ function upvote(
     permlink,
     weightage,
     function(err, result) {
-      console.log(err, result);
+      if (err) {
+        return 'ERROR';
+      }
+
+      if (!!result.id && !!result.block_num) {
+        return result;
+      }
+      return 'ERROR';
     }
   );
 }
