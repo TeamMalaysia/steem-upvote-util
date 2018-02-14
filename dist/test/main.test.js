@@ -23,7 +23,7 @@ var config = {
   optimumLength: 4000
 };
 
-(0, _index2.main)('chuazm', 'love-is-in-the-air-in-mindvalley-benefits-for-company-culture', config).then(function (data) {
+(0, _index2.main)('superoo7', 'gopro-hero-6-2018-02-13-09-33-41', config).then(function (data) {
   return console.log(data);
 });
 //# sourceMappingURL=main.test.js.map

@@ -122,7 +122,7 @@ function weightageForPost(postLength, minimumLength, optimumLength) {
     return 10 * 100;
   } else if (postLength < optimumLength) {
     // 10% ~ 80% VP
-    return parseInt((postLength - minimumLength) / (optimumLength - minimumLength) * 70 * 100 + 10);
+    return parseInt((postLength - minimumLength) / (optimumLength - minimumLength) * 70 * 100 + 10 * 100);
   } else {
     // 80% VP
     return 80 * 100;
