@@ -34,7 +34,13 @@ function main(author, permlink, config) {
       } = data;
       if (isCheetah) {
         return { msg: 'CHEETAH' };
-      } else if (checkPostAge(created, maximumPostAge)) {
+      } else if (
+        checkPostAge(
+          created,
+          maximumPostAge,
+          minimumPostAge
+        )
+      ) {
         // 3.5 days
         return { msg: 'OLD_POST' };
       } else {
@@ -131,7 +137,11 @@ function upvote(
   }).catch(err => 'ERROR');
 }
 
-function checkPostAge(isoDate, maximumPostAge) {
+function checkPostAge(
+  isoDate,
+  maximumPostAge,
+  minimumPostAge
+) {
   const unixDate = new Date(
     isoDate
       .replace(/-/g, '/')
@@ -139,7 +149,7 @@ function checkPostAge(isoDate, maximumPostAge) {
       .replace('Z', '')
   );
   return (
-    Date.now() - unixDate > maximumPostAge &&
+    Date.now() - unixDate > maximumPostAge ||
     Date.now() - unixDate < minimumPostAge
   );
 }

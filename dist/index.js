@@ -40,7 +40,7 @@ function main(author, permlink, config) {
 
     if (isCheetah) {
       return { msg: 'CHEETAH' };
-    } else if (checkPostAge(created, maximumPostAge)) {
+    } else if (checkPostAge(created, maximumPostAge, minimumPostAge)) {
       // 3.5 days
       return { msg: 'OLD_POST' };
     } else {
@@ -112,9 +112,9 @@ function upvote(steem_posting_key, steem_username, author, permlink, weightage) 
   });
 }
 
-function checkPostAge(isoDate, maximumPostAge) {
+function checkPostAge(isoDate, maximumPostAge, minimumPostAge) {
   var unixDate = new Date(isoDate.replace(/-/g, '/').replace('T', ' ').replace('Z', ''));
-  return Date.now() - unixDate > maximumPostAge && Date.now() - unixDate < minimumPostAge;
+  return Date.now() - unixDate > maximumPostAge || Date.now() - unixDate < minimumPostAge;
 }
 
 function weightageForPost(postLength, minimumLength, optimumLength) {
