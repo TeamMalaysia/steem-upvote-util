@@ -13,6 +13,7 @@ import {
 function main(author, permlink, config) {
   const {
     maximumPostAge,
+    minimumPostAge,
     minimumLength,
     optimumLength
   } = config;
@@ -137,7 +138,10 @@ function checkPostAge(isoDate, maximumPostAge) {
       .replace('T', ' ')
       .replace('Z', '')
   );
-  return Date.now() - unixDate > maximumPostAge;
+  return (
+    Date.now() - unixDate > maximumPostAge &&
+    Date.now() - unixDate < minimumPostAge
+  );
 }
 
 function weightageForPost(

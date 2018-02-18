@@ -21,6 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function main(author, permlink, config) {
   var maximumPostAge = config.maximumPostAge,
+      minimumPostAge = config.minimumPostAge,
       minimumLength = config.minimumLength,
       optimumLength = config.optimumLength;
 
@@ -113,7 +114,7 @@ function upvote(steem_posting_key, steem_username, author, permlink, weightage) 
 
 function checkPostAge(isoDate, maximumPostAge) {
   var unixDate = new Date(isoDate.replace(/-/g, '/').replace('T', ' ').replace('Z', ''));
-  return Date.now() - unixDate > maximumPostAge;
+  return Date.now() - unixDate > maximumPostAge && Date.now() - unixDate < minimumPostAge;
 }
 
 function weightageForPost(postLength, minimumLength, optimumLength) {
